@@ -185,10 +185,12 @@ public class MemberTable extends JFrame implements ActionListener{
 		
 		//회원등록 화면의 성별
 		txtGender.addActionListener(this);
+		//회원삭제
+		btnNewButton_2.addActionListener(this);
 	}
 	
 	public DefaultTableModel getModel() {
-		String columnNames[]= {"이름","점수"};
+		String columnNames[]= {"번호","이름","나이","성별"};
 		model = new DefaultTableModel(columnNames,0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {			
@@ -237,6 +239,17 @@ public class MemberTable extends JFrame implements ActionListener{
 			MemberVO vo = dao.getRow(no);
 			Object[] rowData = {vo.getNo(),vo.getName(),vo.getAge(),vo.getGender()};
 			model1.addRow(rowData);
+		}else if(e.getActionCommand().equals("삭제")) {
+			//사용자가 입력한 번호 가져오기
+			int no = Integer.parseInt(txtGetNo.getText());
+			//해당하는 회원 삭제해주기
+			int result = dao.remove(no);
+			
+			if (result>0) {//성공
+				JOptionPane.showMessageDialog(this, "삭제성공");
+				model.setNumRows(0);
+				
+			}
 		}
 		
 	}
